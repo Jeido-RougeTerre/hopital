@@ -8,15 +8,10 @@
     <title>Accueil - <%=hostname%></title>
 </head>
 <body>
-<header>
-    <h1>Bienvenue à l'Hôpital <%=hostname%></h1>
-    <nav><a href="${pageContext.request.contextPath}/index.jsp">Acceuil</a><a href="${pageContext.request.contextPath}/list">Liste des Patients</a></nav>
-</header>
+<jsp:include page="WEB-INF/hospital-header.jsp"/>
 <main>
     <br/>
 </main>
-<footer>
-    <p>© 2024 Hôpital <%=hostname%> Tout droits réservés</p>
-</footer>
+<jsp:include page="WEB-INF/hospital-footer.jsp"/>
 </body>
 </html>

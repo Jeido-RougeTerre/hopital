@@ -8,16 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Liste des Patient - <%=hostname%>
+    <title>Liste des Patients - <%=hostname%>
     </title>
 </head>
 <body>
-<header>
-    <h1>Bienvenue à l'Hôpital <%=hostname%>
-    </h1>
-    <nav><a href="${pageContext.request.contextPath}/index.jsp">Acceuil</a><a
-            href="${pageContext.request.contextPath}/list">Liste des Patients</a></nav>
-</header>
+
+<jsp:include page="hospital-header.jsp"/>
 <main>
     <div>
         <form action="" style="">
@@ -38,8 +34,6 @@
         <h2>Liste des patients :</h2>
     </div>
 </main>
-<footer>
-    <p>© 2024 Hôpital <%=hostname%> Tout droits réservés</p>
-</footer>
+<jsp:include page="hospital-footer.jsp"/>
 </body>
 </html>
