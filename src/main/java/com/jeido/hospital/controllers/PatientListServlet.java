@@ -38,7 +38,7 @@ public class PatientListServlet extends HttpServlet {
         }
 
         switch (pathInfo.substring(1)) {
-            case "add"-> add(req, resp);
+            case "add"-> addGet(req, resp);
             case "search" -> search(req, resp);
             default -> list(req, resp);
         }
@@ -52,7 +52,7 @@ public class PatientListServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/list.jsp").forward(req, resp);
     }
 
-    public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void addGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Patient> patients = service.findAll();
         req.setAttribute("patients", patients);
         req.setAttribute("mode", "add");
@@ -64,6 +64,34 @@ public class PatientListServlet extends HttpServlet {
         List<Patient> patients = service.findByName(req.getParameter("name"));
         req.setAttribute("patients", patients);
         req.setAttribute("mode", "search");
+        req.getRequestDispatcher("/WEB-INF/list.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String pathInfo =(req.getPathInfo() == null || req.getPathInfo().substring(1).isEmpty() ? "" : req.getPathInfo());
+
+        if (!pathInfo.startsWith("/")) {
+            doGet(req, resp);
+            return;
+        }
+
+        if (pathInfo.substring(1).equals("add")) {
+            addPost(req, resp);
+        } else {
+            doGet(req, resp);
+        }
+    }
+
+    protected void addPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String phone = req.getParameter("phone");
+        LocalDate birthDate = LocalDate.parse(req.getParameter("birthDate"));
+
+        service.create(name, phone, birthDate);
+        req.setAttribute("mode", "");
+        List<Patient> patients = service.findAll();
+        req.setAttribute("patients", patients);
         req.getRequestDispatcher("/WEB-INF/list.jsp").forward(req, resp);
     }
 }

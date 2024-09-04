@@ -19,7 +19,6 @@ public class ConnectionServlet extends HttpServlet {
         HttpSession session = req.getSession();
         boolean isLogged = session.getAttribute("isLogged") != null && (boolean) session.getAttribute("isLogged");
 
-        req.setAttribute("session", isLogged);
 
         if (isLogged) {
             req.getRequestDispatcher("/list").forward(req, resp);

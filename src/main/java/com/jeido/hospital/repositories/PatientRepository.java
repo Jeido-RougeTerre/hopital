@@ -11,7 +11,7 @@ public class PatientRepository extends BaseRepository<Patient> {
 
     public List<Patient> findByName(String name) {
         session = sessionFactory.openSession();
-        List<Patient> patient = session.createQuery("from Patient where name like %:name%", Patient.class).setParameter("name", name).list();
+        List<Patient> patient = session.createQuery("from Patient where name like :name", Patient.class).setParameter("name", "%" + name + "%").list();
         session.close();
         return patient;
     }

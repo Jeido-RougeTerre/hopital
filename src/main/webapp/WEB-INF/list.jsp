@@ -6,6 +6,7 @@
     List<Patient> patients = (List<Patient>) request.getAttribute("patients");
     Patient patient = (Patient) request.getAttribute("patient");
     String mode = (String)request.getAttribute("mode");
+    boolean isLogged = session.getAttribute("isLogged") != null && (boolean)session.getAttribute("isLogged");
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -18,26 +19,26 @@
 <jsp:include page="hospital-header.jsp"/>
 <main>
     <div>
-        <form action="<%=!mode.equals("add")? "search" : ""%>" method="post">
+        <form action="<%=(mode.equals("search")? "" : "list/search")%>" method="post">
             <label for="searchedName">Rechercher un patient :</label>
             <input name="searchedName" id="searchedName" type="text"/>
             <button>🔍</button>
         </form>
         <hr/>
         <h2>Ajouter un patient :</h2>
-        <% if ((boolean)request.getAttribute("session") && request.getAttribute("mode").equals("add")) {%>
-                <form action="<%=mode.equals("add") ? "add" : ""%>" method="post">
+        <% if (isLogged && request.getAttribute("mode").equals("add")) {%>
+                <form action="add" method="post">
                     <div>
                         <label for="name">Nom :</label>
-                        <input type="text" name="name" id="name" value="<%=patient.getName()%>" <% if(mode.equals("add")) {%> required <% } else { %> readonly <% } %>>
+                        <input type="text" name="name" id="name" value="<%=patient.getName()%>"  required>
                     </div>
                     <div>
                         <label for="phone">Téléphone :</label>
-                        <input type="text" name="phone" id="phone" value="<%=patient.getPhone()%>" <% if(mode.equals("add")) { %> required <% } else { %> readonly <% } %>>
+                        <input type="text" name="phone" id="phone" value="<%=patient.getPhone()%>" required>
                     </div>
                     <div>
-                        <label for="dateOfBirth">Téléphone :</label>
-                        <input type="text" name="dateOfBirth" id="dateOfBirth" value="<%=patient.getBirthDate()%>" <% if(mode.equals("add")) { %> required <% } else { %> readonly <% } %>>
+                        <label for="birthDate">Date de Naissance :</label>
+                        <input type="date" name="birthDate" id="birthDate" value="<%=patient.getBirthDate()%>" required>
                     </div>
                     <hr/>
                     <div>
@@ -46,7 +47,7 @@
                         <%}%>
                     </div>
                 </form>
-        <%} else if (!(boolean) request.getAttribute("session")){%>
+        <%} else if (!isLogged){%>
                 <a href="${pageContext.request.contextPath}/auth">Se Connecter</a>
         <%} else {%>
                 <a href="list/add">Ajouter un Patient</a>
@@ -55,6 +56,15 @@
     <hr/>
     <div>
         <h2>Liste des patients :</h2>
+        <div class="card">
+            <%for (Patient p : patients) {%>
+                <div>
+                    <p><%=p.getName()%></p>
+                    <p><%=p.getPhone()%></p>
+                    <a href="detail/<%=p.getId()%>">Details</a>
+                </div>
+            <%}%>
+        </div>
     </div>
 </main>
 <jsp:include page="hospital-footer.jsp"/>
