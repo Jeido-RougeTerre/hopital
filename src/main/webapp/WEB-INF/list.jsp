@@ -46,8 +46,10 @@
                         <%}%>
                     </div>
                 </form>
-        <%} else {%>
+        <%} else if (!(boolean) request.getAttribute("session")){%>
                 <a href="${pageContext.request.contextPath}/auth">Se Connecter</a>
+        <%} else {%>
+                <a href="list/add">Ajouter un Patient</a>
         <%}%>
     </div>
     <hr/>

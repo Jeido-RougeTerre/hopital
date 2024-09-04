@@ -17,7 +17,7 @@
 <jsp:include page="hospital-header.jsp"/>
 <main>
     <h1>Se connecter</h1>
-    <form action="${pageContext.request.contextPath}/auth" method="post">
+    <form action="auth" method="post">
         <div>
             <label for="username">Login</label>
             <input id="username" name="username"/>

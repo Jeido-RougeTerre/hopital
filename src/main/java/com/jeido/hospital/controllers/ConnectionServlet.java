@@ -22,9 +22,9 @@ public class ConnectionServlet extends HttpServlet {
         req.setAttribute("session", isLogged);
 
         if (isLogged) {
-            req.getRequestDispatcher("/list");
+            req.getRequestDispatcher("/list").forward(req, resp);
         } else {
-            req.getRequestDispatcher("/WEB-INF/auth.jsp");
+            req.getRequestDispatcher("/WEB-INF/auth.jsp").forward(req, resp);
         }
     }
 
@@ -33,8 +33,14 @@ public class ConnectionServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        session.setAttribute("isLogged", username.equals(USERNAME) && password.equals(PASSWORD));
 
-        doGet(req, resp);
+        boolean isLogged = username.equals(USERNAME) && password.equals(PASSWORD);
+
+        session.setAttribute("isLogged", isLogged);
+        if (isLogged) {
+            resp.sendRedirect("list");
+        } else {
+            doGet(req, resp);
+        }
     }
 }
